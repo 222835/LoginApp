@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Bienvenido {{ username }}</h2>
+  <p>Esta es la página home tras iniciar sesión.</p>
+  <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+{% endblock %}
