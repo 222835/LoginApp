@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: url("https://images.unsplash.com/photo-1506452305024-9d3f02d1c9b5?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8NGslMjBmb3Jlc3R8ZW58MHx8MHx8fDA%3D") no-repeat center center fixed;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -35,7 +35,7 @@
         }
 
         nav a {
-            color: #667eea;
+            color: #2aa850ff;
             text-decoration: none;
             margin: 0 10px;
             font-weight: 500;
@@ -43,23 +43,24 @@
         }
 
         nav a:hover {
-            color: #5a6fd8;
+            color: #2aa850ff;
         }
 
         .container {
-            background: white;
+            background: rgba(255, 255, 255, 0.15);
             padding: 2rem;
             border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
             text-align: center;
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         h1, h2 {
             margin-bottom: 1.5rem;
-            color: #333;
+            color: #ffffffff;
         }
 
         .form-group {
@@ -70,7 +71,7 @@
         label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #555;
+            color: #e6e6e6ff;
             font-weight: 500;
         }
 
@@ -90,7 +91,7 @@
 
         input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #2aa850ff;
             background: white;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
@@ -131,7 +132,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #96cf8bff 0%, #2aa850ff 100%);
             color: white;
             transform: translateY(0);
         }
@@ -153,7 +154,7 @@
 
         .link {
             margin-top: 1.5rem;
-            color: #667eea;
+            color: #84cf8aff;
             cursor: pointer;
             text-decoration: none;
             font-weight: 500;
@@ -161,7 +162,7 @@
         }
 
         .link:hover {
-            color: #5a6fd8;
+            color: #79c089ff;
             text-decoration: underline;
         }
 
@@ -222,7 +223,7 @@
 
         .username-display {
             font-weight: bold;
-            color: #667eea;
+            color: #2aa850ff;
             text-shadow: 0 2px 4px rgba(102, 126, 234, 0.1);
         }
 
@@ -247,8 +248,7 @@
 <body>
     <nav>
         <a href="{{ url_for('auth.register') }}">Registro</a> |
-        <a href="{{ url_for('auth.login') }}">Login</a> |
-        <a href="{{ url_for('main.home') }}">Home</a>
+        <a href="{{ url_for('auth.login') }}">Login</a>
     </nav>
 
     <div class="container">
@@ -269,7 +269,7 @@
         // Función para alternar visibilidad de contraseña
         function togglePassword(inputId) {
             const passwordInput = document.getElementById(inputId);
-            const toggleButton = passwordInput.nextElementSibling;
+            const toggleButton = passwordInput.nextElementSibling.querySelector("i");
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';

@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from extensions import db
 from models import User
 from sqlalchemy.exc import IntegrityError
+import re
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -14,6 +15,17 @@ def register():
 
         if not username or not password:
             flash("Usuario y contraseña requeridos", "warning")
+            return redirect(url_for("auth.register"))
+        
+        username_regex = re.compile(r"^[A-Za-z0-9]{5,20}$")
+        password_regex = re.compile(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$")
+
+        if not username_regex.match(username):
+            flash("El usuario solo puede contener letras y números (5-20 caracteres).", "danger")
+            return redirect(url_for("auth.register"))
+
+        if not password_regex.match(password):
+            flash("La contraseña debe tener al menos una letra, un número y un símbolo (6+ caracteres).", "danger")
             return redirect(url_for("auth.register"))
 
         pw_hash = generate_password_hash(password)

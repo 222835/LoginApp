@@ -11,12 +11,6 @@
         has iniciado sesión correctamente.
     </div>
     
-    <div class="user-info">
-        <p style="color: #666; margin-bottom: 1rem;">
-            <strong>Último acceso:</strong> {{ moment().format('LLLL') if moment else 'Ahora' }}
-        </p>
-    </div>
-    
     <div class="actions">
         <form method="POST" action="{{ url_for('auth.logout') }}" style="display: inline;">
             {{ csrf_token() if csrf_token }}
