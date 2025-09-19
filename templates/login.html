@@ -1,9 +1,80 @@
 {% extends "base.html" %}
+
+{% block title %}Iniciar Sesión - Sistema de Autenticación{% endblock %}
+
 {% block content %}
-  <h2>Login</h2>
-  <form method="post">
-    <label>Usuario <input name="username"></label><br/>
-    <label>Contraseña <input name="password" type="password"></label><br/>
-    <button type="submit">Entrar</button>
-  </form>
+<h2>Iniciar Sesión</h2>
+
+<form method="POST" action="{{ url_for('auth.login') }}">
+    {{ csrf_token() if csrf_token }}
+    
+    <div class="form-group">
+        <label for="username">Usuario</label>
+        <input type="text" 
+               id="username" 
+               name="username" 
+               value="{{ request.form.username if request.form.username }}"
+               required>
+    </div>
+    
+    <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="input-container">
+            <input type="password" 
+                   id="password" 
+                   name="password" 
+                   required>
+            <button type="button" 
+                    class="toggle-password" 
+                    onclick="togglePassword('password')"
+                    title="Mostrar/ocultar contraseña">
+                    <i class="fa-solid fa-eye"></i>
+            </button>
+        </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">
+        Iniciar Sesión
+    </button>
+</form>
+
+<div class="link">
+    <a href="{{ url_for('auth.register') }}" class="link">
+        ¿No tienes cuenta? Regístrate aquí
+    </a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Enfocar automáticamente el campo de usuario
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('username').focus();
+    });
+
+    // Validación del formulario en el cliente
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        
+        if (!username) {
+            alert('El campo usuario es obligatorio');
+            e.preventDefault();
+            document.getElementById('username').focus();
+            return;
+        }
+        
+        if (!password) {
+            alert('El campo contraseña es obligatorio');
+            e.preventDefault();
+            document.getElementById('password').focus();
+            return;
+        }
+        
+        // Mostrar indicador de carga
+        const submitBtn = document.querySelector('.btn-primary');
+        submitBtn.textContent = 'Iniciando sesión...';
+        submitBtn.disabled = true;
+    });
+</script>
 {% endblock %}

@@ -1,6 +1,196 @@
 {% extends "base.html" %}
+
+{% block title %}Inicio - Sistema de Autenticación{% endblock %}
+
 {% block content %}
-  <h2>Bienvenido {{ username }}</h2>
-  <p>Esta es la página home tras iniciar sesión.</p>
-  <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+<div class="welcome-container">
+    <h1>¡Bienvenido!</h1>
+    
+    <div class="welcome-message">
+        Hola <span class="username-display">{{ current_user.username if current_user else session.username }}</span>, 
+        has iniciado sesión correctamente.
+    </div>
+    
+    <div class="user-info">
+        <p style="color: #666; margin-bottom: 1rem;">
+            <strong>Último acceso:</strong> {{ moment().format('LLLL') if moment else 'Ahora' }}
+        </p>
+    </div>
+    
+    <div class="actions">
+        <form method="POST" action="{{ url_for('auth.logout') }}" style="display: inline;">
+            {{ csrf_token() if csrf_token }}
+            <button type="submit" class="btn btn-secondary" onclick="return confirmLogout()">
+                 Cerrar Sesión
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .welcome-container {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .user-info {
+        background: rgba(102, 126, 234, 0.1);
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 1.5rem 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .actions {
+        margin-top: 2rem;
+    }
+
+    .actions .link {
+        display: inline-block;
+        margin: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 20px;
+        transition: all 0.3s;
+        text-decoration: none;
+    }
+
+    .actions .link:hover {
+        background: rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.5);
+        padding: 1rem;
+        border-radius: 10px;
+        text-align: center;
+        border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .stat-card h3 {
+        color: #667eea;
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    .stat-card p {
+        color: #666;
+        margin: 0.5rem 0 0 0;
+        font-size: 0.9rem;
+    }
+
+    .quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+
+    .quick-actions .btn {
+        width: auto;
+        margin: 0;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function confirmLogout() {
+        return confirm('¿Estás seguro de que deseas cerrar sesión?');
+    }
+
+    // Mostrar hora actual
+    function updateCurrentTime() {
+        const now = new Date();
+        const timeString = now.toLocaleString('es-ES', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        // Si existe un elemento para mostrar la hora, actualizarlo
+        const timeElement = document.querySelector('.current-time');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    // Actualizar cada minuto
+    setInterval(updateCurrentTime, 60000);
+    updateCurrentTime();
+
+    // Animación de entrada para los elementos
+    document.addEventListener('DOMContentLoaded', function() {
+        const elements = document.querySelectorAll('.stat-card, .actions .link');
+        elements.forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.1}s`;
+            el.style.animation = 'fadeInUp 0.6s ease-out forwards';
+        });
+    });
+
+    // Efecto de partículas en el fondo (opcional)
+    function createParticle() {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 4s linear infinite;
+            left: ${Math.random() * 100}vw;
+            top: 100vh;
+            z-index: -1;
+        `;
+        
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+            particle.remove();
+        }, 4000);
+    }
+
+    // Crear partículas ocasionalmente
+    setInterval(createParticle, 2000);
+
+    // Agregar la animación float
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes float {
+            to {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 {% endblock %}
